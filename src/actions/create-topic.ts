@@ -2,4 +2,5 @@
 
 export async function createTopic() {
 
+   // TODO: Revalidate the homepage
 }
