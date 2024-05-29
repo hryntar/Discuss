@@ -6,33 +6,37 @@ import { useFormState } from "react-dom";
 import FormButton from "@/components/common/FormButton";
 
 export default function PostCreateForm() {
+   const [formState, action] = useFormState(actions.createPost, {
+      errors: {},
+   });
+
    return (
       <Popover placement="left">
          <PopoverTrigger>
             <Button color="primary">Create a Post</Button>
          </PopoverTrigger>
          <PopoverContent>
-            <form >
+            <form action={action}>
                <div className="flex flex-col gap-4 p-4 w-80">
                   <h3 className="text-lg">Create a Post</h3>
                   <Input
-                     // isInvalid={!!formState.errors.name}
-                     // errorMessage={formState.errors.name?.join(", ")}
+                     isInvalid={!!formState.errors.title}
+                     errorMessage={formState.errors.title?.join(", ")}
                      name="title"
                      label="Title"
                      labelPlacement="outside"
                      placeholder="Title"
                   />
                   <Textarea
-                     // isInvalid={!!formState.errors.description}
-                     // errorMessage={formState.errors.description?.join(", ")}
+                     isInvalid={!!formState.errors.content}
+                     errorMessage={formState.errors.content?.join(", ")}
                      name="content"
                      label="Content"
                      labelPlacement="outside"
                      placeholder="Content"
                   />
 
-                  {/* {formState.errors._form?.join(", ")} */}
+                  {formState.errors._form?.join(", ")}
 
                   <FormButton>Create Post</FormButton>
                </div>
