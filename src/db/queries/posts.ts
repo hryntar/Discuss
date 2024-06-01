@@ -8,15 +8,30 @@ export function fetchPostsByTopicSlug(slug: string) {
       where: { topic: { slug } },
       include: {
          topic: { select: { slug: true } },
-         user: { select: { name: true } },   
+         user: { select: { name: true } },
          _count: { select: { comments: true } }
       }
    })
 }
 
-export type TopPostForListDisplay = Awaited<ReturnType<typeof fetchTopPosts>>[number]
+export function fetchPostsBySearchTerm(term: string): Promise<PostForListDisplay[]> {
+   return db.post.findMany({ 
+      include: {
+         topic: { select: { slug: true } },
+         user: { select: { name: true, image: true } },
+         _count: { select: { comments: true } }
+      },
+      where: {
+         OR: [
+            { title: { contains: term } },
+            { content: { contains: term } }
+         ]
+      }
+   })
+}
 
-export function fetchTopPosts() {
+
+export function fetchTopPosts(): Promise<PostForListDisplay[]> {
    return db.post.findMany({
       orderBy: [{
          comments: {
